@@ -1,98 +1,80 @@
-import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
-import AntDesign from '@expo/vector-icons/AntDesign';
-import RestaurantCard from './RestaurantCard';
-interface FeaturedProps{
-    title: string;
-    description: string;
-    id: string;
-}
-const FeaturedRow = ({title, description, id}:FeaturedProps) => {
-  return (
-    <View> 
-       <View className="mt-4 flex-row items-center justify-between px-4">
-        <Text className="font-bold text-lg">{title}</Text>
-        <AntDesign name="arrowright" size={24} color="#00CCBB" />
-        </View>
-        <Text className="text-xs text-gray-500 px-4">{description}</Text>
-        
-        <ScrollView
-            horizontal
-            contentContainerStyle={{
-                paddingHorizontal:15,
-            }}
-            showsHorizontalScrollIndicator={false}
-            className="pt-4"
-        >
-            <RestaurantCard
-                id={123}
-                imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
-                 
-                title="Yo! Sushi"
-                rating={4.5}
-                genre="Japanese"
-                address="123 Main St"
-                short_description="This is a test description"
-                dishes={[]}
-                long={20}
-                lat={0}
-                />
-            <RestaurantCard
-                id={123}
-                imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
-                 
-                title="Yo! Sushi"
-                rating={4.5}
-                genre="Japanese"
-                address="123 Main St"
-                short_description="This is a test description"
-                dishes={[]}
-                long={20}
-                lat={0}
-            />
-            <RestaurantCard
-                id={123}
-                imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
-                 
-                title="Yo! Sushi"
-                rating={4.5}
-                genre="Japanese"
-                address="123 Main St"
-                short_description="This is a test description"
-                dishes={[]}
-                long={20}
-                lat={0}
-            />
-            <RestaurantCard
-                id={123}
-                imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
-                 
-                title="Yo! Sushi"
-                rating={4.5}
-                genre="Japanese"
-                address="123 Main St"
-                short_description="This is a test description"
-                dishes={[]}
-                long={20}
-                lat={0}
-            />
-            <RestaurantCard
-                id={123}
-                imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
-                 
-                title="Yo! Sushi"
-                rating={4.5}
-                genre="Japanese"
-                address="123 Main St"
-                short_description="This is a test description"
-                dishes={[]}
-                long={20}
-                lat={0}
-            />
+import { View, Text, ScrollView } from "react-native";
+import React from "react";
+import { Feather } from "@expo/vector-icons";
+import RestaurantCard from "./RestaurantCard";
 
-        </ScrollView>
+interface Restaurant {
+  id: string;
+  imgUrl: string;
+  title: string;
+  rating: number;
+  genre: string;
+  address: string;
+  short_description: string;
+  dishes: string;
+  long: string;
+  lat: string;
+}
+
+interface FeatureProps {
+  id: string;
+  title: string;
+  description: string;
+  restaurants: Restaurant[];
+}
+
+const FeaturedRow: React.FC<FeatureProps> = ({
+  id,
+  title,
+  description,
+  restaurants,
+}) => {
+  return (
+    <View>
+      <View
+        style={{
+          marginTop: 16,
+          paddingHorizontal: 16,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+        className="mt-4 px-4 flex-row items-center justify-between"
+      >
+        <Text className="font-bold text-xl">{title}</Text>
+        <Feather name="arrow-right" size={24} color="#00CCBB" />
+      </View>
+      <Text
+        style={{ color: "rgb(107 114 128)", paddingHorizontal: 16 }}
+        className="text-sm text-gray-500 px-4"
+      >
+        {description}
+      </Text>
+
+      <ScrollView
+        horizontal
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+        showsHorizontalScrollIndicator={false}
+        style={{ marginTop: 8 }}
+      >
+        {restaurants.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant.id}
+            id={restaurant.id}
+            imgUrl={restaurant.imgUrl}
+            title={restaurant.title}
+            rating={restaurant.rating}
+            genre={restaurant.genre}
+            address={restaurant.address}
+            short_description={restaurant.short_description}
+            dishes={restaurant.dishes}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
-export default FeaturedRow
+export default FeaturedRow;

@@ -1,38 +1,57 @@
 import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
-import CategoryCard from './CategoryCard'
+import React, { useEffect, useState } from 'react'
+import CategoryCard from './CategoryCard';
+import { sanityClient, urlFor } from '@/studio/sanityClient';
 
 const Categories = () => {
+    interface Category {
+      _id: string;
+      name: string;
+      image: string;
+    }
+    
+    const [categories, setCategories] = useState<Category[]>([]);
+
+
+    useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          const data = await sanityClient.fetch(
+            `*[_type == "menuCategory"]{
+            _id,
+            name,
+            image
+          }`
+          );
+
+          setCategories(data);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
+
+      fetchCategories();
+    }, []);
+
+
   return (
-<ScrollView
+    <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        paddingHorizontal: 15,
-        padding: 10,
+        paddingHorizontal: 16,
+        padding: 12,
       }}
     >
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 1"
+      {categories.map((category) => (
+        <CategoryCard
+          key={category._id}
+          imgUrl={urlFor(category.image).url()}
+          title={category.name}
         />
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 2"
-        />
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 3"
-        />
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 4"
-        />
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 5"
-        />
-        <CategoryCard imgUrl="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" 
-        title= "Testing 6 "
-        />
-
+      ))}
     </ScrollView>
-  )
+  );
 }
 
 export default Categories
